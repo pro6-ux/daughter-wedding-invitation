@@ -1,0 +1,744 @@
+/* ==========================================
+   🌸 프리미엄 모바일 청첩장 스타일시트 (style.css)
+   사용자님의 따님 결혼식을 빛내줄 우아하고 감성적인 옷입니다.
+   ========================================== */
+
+/* 1. 디자인에 사용할 주요 색상과 속성들을 약속해 둡니다. */
+:root {
+    --primary-color: #C88E82;     /* 메인 로즈골드 핑크 */
+    --primary-light: #FDF5F3;    /* 매우 연한 핑크베이지 (배경용) */
+    --accent-color: #B07469;     /* 조금 더 짙은 브라운 핑크 (포인트용) */
+    --bg-warm: #FAF8F5;          /* 따뜻하고 은은한 아이보리 배경 */
+    --text-dark: #3E3A39;        /* 가독성 높은 차분한 진갈색 */
+    --text-light: #7E7471;       /* 부드러운 보조 글씨 회갈색 */
+    --white: #FFFFFF;            /* 순백색 */
+    --shadow-soft: 0 8px 30px rgba(200, 142, 130, 0.08); /* 부드러운 로즈골드빛 그림자 */
+    --shadow-hover: 0 12px 35px rgba(176, 116, 105, 0.15); /* 마우스를 올렸을 때의 그림자 */
+    --border-soft: 1px solid #EFEAE4; /* 은은한 선 테두리 */
+}
+
+/* 2. 브라우저 기본 여백을 지우고, 전체 틀을 잡습니다. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* 모바일에서 클릭 시 시퍼런 음영이 생기는 걸 방지합니다 */
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-dark);
+    background-color: #ECE9E6; /* 전체 PC 배경은 부드러운 투톤 베이지로 두어 모바일 화면을 돋보이게 합니다 */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+/* 3. 모바일 화면 크기에 맞게 가운데로 모아주는 상자입니다. */
+.content-wrapper, 
+.main-banner,
+.main-footer {
+    width: 100%;
+    max-width: 480px; /* 스마트폰의 가로 크기 한계선 */
+    margin: 0 auto;
+    background-color: var(--bg-warm);
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.08); /* 모바일 화면 외곽의 입체감 있는 그림자 */
+}
+
+body > .main-banner,
+body > .main-footer {
+    margin-bottom: 0;
+}
+
+/* 4. 애니메이션 효과 (서서히 나타나는 효과) */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 5. 메인 배너 영역 (첫 화면) */
+.main-banner {
+    height: 100vh; /* 화면 높이를 100% 꽉 채웁니다 */
+    /* 업로드해 주신 신부 사랑님의 예쁜 웨딩 실물 사진(bride.png)을 메인 배경으로 우아하게 매칭합니다. */
+    /* 신랑 현빈님 & 신부 사랑님 둘이 함께 있는 커플 사진을 첫 화면 배경으로 사용합니다. */
+    background: linear-gradient(rgba(253, 245, 243, 0.75), rgba(250, 248, 245, 0.90)), 
+                url('assets/couple.png') no-repeat center center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    border-bottom: 1px solid #ECE7E1;
+}
+
+.banner-content {
+    animation: fadeIn 1.8s ease-out; /* 우아하게 스르륵 나타나는 애니메이션 */
+    width: 100%;
+}
+
+.wedding-subtitle {
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.wedding-title {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.6;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+}
+
+.wedding-date-time {
+    font-size: 15px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.wedding-venue {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 50px;
+}
+
+/* 6. 디데이 카운트다운 타이머 */
+.countdown-container {
+    background-color: var(--white);
+    padding: 22px 18px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    margin: 0 auto;
+    width: 92%;
+    border: 1px solid #FAF0EE;
+}
+
+.countdown-title {
+    font-size: 13px;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+.timer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 50px;
+}
+
+/* ⏳ 롤링 애니메이션 스타일입니다. */
+.time-num {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--accent-color);
+    display: inline-block;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* 숫자가 바뀔 때 스르륵 회전하며 나타나는 클래스입니다 */
+.time-num.rolling {
+    animation: rollUp 0.3s ease-in-out;
+}
+
+/* 매초 부드럽게 숫자가 올라가며 미끄러지는 효과의 키프레임 정의 */
+@keyframes rollUp {
+    0% {
+        opacity: 0.3;
+        transform: translateY(12px);
+    }
+    50% {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    51% {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.time-label {
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: 6px;
+}
+
+/* 7. 내용 레이아웃 및 공통 구역(Section) 디자인 */
+.content-wrapper {
+    background-color: var(--bg-warm);
+    padding: 65px 24px;
+}
+
+section {
+    margin-bottom: 80px;
+    animation: fadeIn 1.2s ease-out;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-title h2 {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.flower-icon {
+    font-size: 18px;
+    color: var(--primary-color);
+    opacity: 0.8;
+}
+
+/* 8. 초대의 글 */
+.greeting-section {
+    text-align: center;
+}
+
+.greeting-text {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 15px;
+    line-height: 2.3;
+    color: var(--text-dark);
+    margin-bottom: 45px;
+}
+
+.family-relation {
+    border-top: var(--border-soft);
+    border-bottom: var(--border-soft);
+    padding: 30px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.relation-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.parent-names {
+    color: var(--text-light);
+}
+
+.parent-names b, 
+.bride-groom-name b {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.relation-text {
+    font-size: 12px;
+    color: var(--text-light);
+    margin: 0 10px;
+}
+
+.bride-groom-name {
+    font-size: 16px;
+    font-family: 'Nanum Myeongjo', serif;
+    color: var(--accent-color);
+    width: 60px;
+    text-align: left;
+}
+
+/* 9. 포토 갤러리 슬라이더 */
+.gallery-section {
+    position: relative;
+}
+
+.slider-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.slider-wrapper {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* 관성을 줘서 훨씬 우아하게 밀어줍니다 */
+}
+
+.slide {
+    min-width: 100%;
+    height: 420px; /* 사진 높이 고정 */
+    background-color: #F8F5F2; /* 사진 여백 부분의 배경색 */
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 기본값: 꽉 채워서 표시 */
+}
+
+/* 신랑 등 세로로 긴 사진이 잘리지 않도록
+   전체 사진이 온전히 보이게 해주는 특별 클래스입니다. */
+.slide.slide-contain {
+    background-color: #F3F0EC; /* 은은한 베이지 배경으로 여백을 감싸 줌 */
+}
+
+.slide.slide-contain img {
+    object-fit: contain;   /* 비율 유지하며 잘리지 않게 전체 표시 */
+    object-position: center center;
+}
+
+/* 좌우 화살표 버튼 (스마트폰 터치 최적화) */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 44px; /* 터치 크기 44px 확보 */
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: var(--accent-color);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.slider-btn:hover {
+    background-color: var(--white);
+    color: var(--primary-color);
+}
+
+.prev-btn { left: 12px; }
+.next-btn { right: 12px; }
+
+/* 하단 점 표시기 */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #E2DBD5;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background-color: var(--primary-color);
+    width: 20px; /* 활성화된 점은 길쭉하게 만들어 고급스러움을 강조합니다 */
+    border-radius: 4px;
+}
+
+/* 10. 오시는 길 */
+.venue-info {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.venue-info h3 {
+    font-size: 17px;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.venue-info .address {
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* 복사하기 단추 (터치 영역 확보) */
+.copy-address-btn {
+    background-color: var(--white);
+    color: var(--text-light);
+    border: var(--border-soft);
+    padding: 10px 20px; /* 패딩을 늘려 누르기 쉽게 조율 */
+    border-radius: 30px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.copy-address-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 지도 임시 영역 */
+.map-placeholder {
+    height: 190px;
+    background-color: #F3EFEA;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    border: 1px dashed #DDD4C8;
+}
+
+.map-icon {
+    font-size: 32px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.map-placeholder p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 18px;
+}
+
+.map-links {
+    display: flex;
+    gap: 12px;
+}
+
+.map-link-btn {
+    text-decoration: none;
+    font-size: 13px;
+    padding: 10px 18px; /* 터치 크기 넉넉히 */
+    border-radius: 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.map-link-btn.naver {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+}
+
+.map-link-btn.kakao {
+    background-color: #FFFDE7;
+    color: #F57F17;
+}
+
+.map-link-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 교통정보 카드 */
+.transportation-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--white);
+    padding: 24px 20px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+}
+
+.transport-item h4 {
+    font-size: 14px;
+    color: var(--accent-color);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.transport-item p {
+    font-size: 13px;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* 11. 축의금 계좌 안내 (아코디언) */
+.accounts-intro {
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-light);
+    margin-bottom: 30px;
+}
+
+.accordion-item {
+    background-color: var(--white);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid #FAF0EE;
+}
+
+.accordion-header {
+    width: 100%;
+    background-color: var(--white);
+    border: none;
+    padding: 20px; /* 패딩을 늘려 모바일 터치 확장 */
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.accordion-header:hover {
+    background-color: var(--primary-light);
+}
+
+.accordion-header i {
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+/* 아코디언이 열렸을 때 화살표 회전 */
+.accordion-header.active i {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0; /* 평소에는 완전히 닫혀있음 */
+    overflow: hidden;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 스르륵 쾌적하게 열리는 애니메이션 */
+    background-color: #FAF9F7;
+    border-top: 0 solid transparent;
+}
+
+/* 활성화되었을 때 보여질 실제 높이 조절은 JS에서 계산해 줍니다 */
+.accordion-content.open {
+    border-top: 1px solid #ECE7E1;
+    padding: 10px 20px;
+}
+
+.account-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #F3ECE5;
+}
+
+.account-row:last-child {
+    border-bottom: none;
+}
+
+.account-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.bank-name {
+    font-size: 12px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.account-number {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+    font-family: monospace; /* 숫자가 삐뚤어지지 않게 고정 폭 폰트 적용 */
+}
+
+.account-holder {
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+/* 계좌 복사 버튼 (터치 가독성 및 누름 영역 넉넉하게) */
+.copy-acc-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.copy-acc-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+/* 12. 안전한 방명록 영역 */
+.guestbook-intro {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-light);
+    margin-bottom: 25px;
+}
+
+.guestbook-form {
+    background-color: var(--white);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 30px;
+    border: 1px solid #FAF0EE;
+}
+
+.form-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.form-row input, 
+.form-row textarea {
+    width: 100%;
+    background-color: #F8F5F2;
+    border: 1px solid #EFEAE4;
+    border-radius: 10px;
+    padding: 14px; /* 패딩을 늘려 글 작성을 더 쾌적하게 조율 */
+    font-size: 14px;
+    color: var(--text-dark);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-row input:focus, 
+.form-row textarea:focus {
+    border-color: var(--primary-color);
+    background-color: var(--white);
+    box-shadow: 0 0 8px rgba(200, 142, 130, 0.2);
+}
+
+/* 방명록 등록 버튼 */
+.submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    color: var(--white);
+    border: none;
+    padding: 15px; /* 모바일 터치 세로 길이 확보 */
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+/* 등록된 방명록 글 목록 */
+.guestbook-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.guestbook-card {
+    background-color: var(--white);
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-soft);
+    border-left: 4px solid var(--primary-color); /* 예쁜 테두리 포인트 */
+    position: relative;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.guest-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #FAF0EE;
+    padding-bottom: 8px;
+}
+
+.guest-card-name {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.guest-card-date {
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+.guest-card-body {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dark);
+    white-space: pre-line; /* 작성할 때 넣은 줄바꿈이 그대로 유지됩니다 */
+}
+
+/* 방명록 삭제 단추 (터치 영역 최적화) */
+.delete-card-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #D32F2F;
+    opacity: 0.4;
+    cursor: pointer;
+    font-size: 12px;
+    transition: opacity 0.3s ease;
+    padding: 8px; /* 터치 크기 확대 */
+}
+
+.delete-card-btn:hover {
+    opacity: 0.9;
+}
+
+/* 13. 저작권 및 푸터 영역 */
+.main-footer {
+    text-align: center;
+    padding: 45px 20px;
+    background-color: var(--primary-light);
+    border-top: var(--border-soft);
+}
+
+.main-footer p:first-child {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 15px;
+    color: var(--accent-color);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.main-footer .copyright {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+}
