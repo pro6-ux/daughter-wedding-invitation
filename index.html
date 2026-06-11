@@ -1,353 +1,191 @@
-S/* ==========================================
-   🧠 프리미엄 모바일 청첩장 자바스크립트 (script.js)
-   카운트다운, 슬라이더, 아코디언, 주소/계좌 복사,
-   그리고 암호화 기술이 내장된 보안 방명록을 통제하는 두뇌입니다.
-   ========================================== */
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <!-- 스마트폰에 딱 맞게 자동 조절 + 줌 방지 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>현빈 ♥ 사랑의 모바일 청첩장에 초대합니다 🌸</title>
 
-// HTML 문서가 완전히 불러와지면 작동을 시작합니다.
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // ==========================================
-    // ⏳ 1. 결혼식 디데이 카운트다운 타이머 (실시간 애니메이션 고도화)
-    // ==========================================
-    // 실제 결혼식 날짜인 2026년 10월 10일 오후 1시로 날짜를 타겟팅합니다!
-    const weddingDate = new Date("2026-10-10T13:00:00").getTime(); 
+    <!-- 구글 예쁜 폰트 불러오기 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 아이콘 라이브러리 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 디자인 파일 연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    // 숫자가 바뀔 때 은은하게 위아래로 회전하는 롤링 애니메이션 효과를 주입하는 특수 함수입니다.
-    function setTimeValueWithAnimation(elementId, newValue) {
-        const element = document.getElementById(elementId);
-        if (!element) return;
-        
-        const oldValue = element.innerText;
-        
-        // 이전 숫자와 새로운 숫자가 다를 때만 움직임(애니메이션)을 줍니다!
-        if (oldValue !== newValue) {
-            // 1. 숫자가 회전하며 사라지도록 애니메이션 클래스 주입
-            element.classList.add("rolling");
-            
-            // 2. 애니메이션이 절반쯤 지나 숫자가 눈에 보이지 않게 되는 0.15초(150ms) 시점에 진짜 글자를 조용히 바꿉니다!
-            setTimeout(() => {
-                element.innerText = newValue;
-            }, 150);
-            
-            // 3. 0.3초(300ms) 애니메이션이 완전히 끝나면 다음 초에 다시 돌 수 있도록 클래스를 빼 줍니다.
-            setTimeout(() => {
-                element.classList.remove("rolling");
-            }, 300);
-        }
-    }
+    <!-- ① 첫 화면 배너 (커플 사진 배경 + 이름 + 카운트다운) -->
+    <header class="main-banner" id="main-banner">
+        <div class="banner-content">
+            <p class="wedding-subtitle">WEDDING INVITATION</p>
+            <h1 class="wedding-title">신랑 현빈 & 신부 사랑</h1>
+            <p class="wedding-date-time">2026년 10월 10일 토요일 오후 1시</p>
+            <p class="wedding-venue">축복웨딩홀 3층 그랜드볼룸</p>
 
-    function updateCountdown() {
-        const now = new Date().getTime(); // 현재 시각
-        const difference = weddingDate - now; // 남은 시간 계산
-
-        if (difference <= 0) {
-            // 결혼식 시간이 지났을 때의 처리입니다
-            document.getElementById("days").innerText = "00";
-            document.getElementById("hours").innerText = "00";
-            document.getElementById("minutes").innerText = "00";
-            document.getElementById("seconds").innerText = "00";
-            document.querySelector(".countdown-title").innerText = "행복하게 잘 살겠습니다! ♥";
-            return;
-        }
-
-        // 남은 시간 단위를 계산합니다
-        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-        // 계산된 숫자를 애니메이션 효과와 함께 화면에 채워넣어 줍니다.
-        // 숫자가 10보다 작을 때는 앞에 0을 붙여 자릿수를 맞춰줍니다. (예: 9초 -> 09초)
-        const daysStr = String(days).padStart(2, "0");
-        const hoursStr = String(hours).padStart(2, "0");
-        const minutesStr = String(minutes).padStart(2, "0");
-        const secondsStr = String(seconds).padStart(2, "0");
-
-        // 애니메이션 효과를 동반하여 매 초 갱신!
-        setTimeValueWithAnimation("days", daysStr);
-        setTimeValueWithAnimation("hours", hoursStr);
-        setTimeValueWithAnimation("minutes", minutesStr);
-        setTimeValueWithAnimation("seconds", secondsStr);
-    }
-
-    // 처음 켜자마자 카운트다운을 한번 실행하고, 이후 1초마다 반복적으로 실행해 줍니다.
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-
-    // ==========================================
-    // 📸 2. 포토 갤러리 이미지 슬라이더
-    // ==========================================
-    const sliderWrapper = document.getElementById("slider-wrapper");
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
-    const prevBtn = document.getElementById("prev-btn");
-    const nextBtn = document.getElementById("next-btn");
-    
-    let currentSlideIndex = 0; // 현재 보여지는 사진 번호 (0번이 첫 사진)
-    const totalSlides = slides.length; // 총 사진 개수
-
-    function showSlide(index) {
-        // 인덱스가 범위를 벗어나지 않도록 조절해 줍니다.
-        if (index < 0) {
-            currentSlideIndex = totalSlides - 1; // 첫 사진에서 이전을 누르면 마지막 사진으로
-        } else if (index >= totalSlides) {
-            currentSlideIndex = 0; // 마지막 사진에서 다음을 누르면 첫 사진으로
-        } else {
-            currentSlideIndex = index;
-        }
-
-        // 사진 틀을 가로로 이동시켜 사진을 바꿉니다. (예: 1번째 사진이면 100% 만큼 왼쪽으로 밉니다)
-        sliderWrapper.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-
-        // 하단 점 표시기(Indicator)의 불빛을 조절합니다.
-        dots.forEach((dot, idx) => {
-            if (idx === currentSlideIndex) {
-                dot.classList.add("active");
-            } else {
-                dot.classList.remove("active");
-            }
-        });
-    }
-
-    // '다음 사진' 화살표를 누르면
-    nextBtn.addEventListener("click", () => {
-        showSlide(currentSlideIndex + 1);
-    });
-
-    // '이전 사진' 화살표를 누르면
-    prevBtn.addEventListener("click", () => {
-        showSlide(currentSlideIndex - 1);
-    });
-
-    // 하단의 점들을 직접 눌러서 사진을 바꿀 때
-    dots.forEach((dot) => {
-        dot.addEventListener("click", (e) => {
-            const index = parseInt(e.target.getAttribute("data-index"));
-            showSlide(index);
-        });
-    });
-
-
-    // ==========================================
-    // 📍 3. 주소 및 계좌번호 원클릭 복사
-    // ==========================================
-    
-    // 예식장 주소 복사하기
-    const copyAddressBtn = document.getElementById("copy-address-btn");
-    copyAddressBtn.addEventListener("click", () => {
-        const addressText = document.getElementById("venue-address").innerText;
-        
-        navigator.clipboard.writeText(addressText).then(() => {
-            alert("예식장 주소가 복사되었습니다. 지도 앱에 붙여넣으세요! 🗺️");
-        }).catch((err) => {
-            console.error("복사 실패: ", err);
-        });
-    });
-
-    // 축의금 계좌번호 복사하기
-    const copyAccBtns = document.querySelectorAll(".copy-acc-btn");
-    copyAccBtns.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-            // 버튼에 저장된 데이터 속성(data-account)에서 계좌번호를 가져옵니다
-            const accNum = e.target.getAttribute("data-account");
-            
-            navigator.clipboard.writeText(accNum).then(() => {
-                alert("계좌번호가 복사되었습니다. 편하게 송금하세요! 💳");
-            }).catch((err) => {
-                console.error("복사 실패: ", err);
-            });
-        });
-    });
-
-
-    // ==========================================
-    // ✉️ 4. 마음 전하실 곳 계좌 안내 (아코디언 토글)
-    // ==========================================
-    const accordionHeaders = document.querySelectorAll(".accordion-header");
-
-    accordionHeaders.forEach((header) => {
-        header.addEventListener("click", () => {
-            const content = header.nextElementSibling; // 바로 아래에 붙어있는 계좌 내용 상자
-
-            // 이미 열려있다면 닫아줍니다.
-            if (header.classList.contains("active")) {
-                header.classList.remove("active");
-                content.classList.remove("open");
-                content.style.maxHeight = null;
-            } else {
-                // 열기 전에 다른 아코디언은 다 닫아주어 깔끔함을 유지합니다.
-                accordionHeaders.forEach((otherHeader) => {
-                    otherHeader.classList.remove("active");
-                    const otherContent = otherHeader.nextElementSibling;
-                    otherContent.classList.remove("open");
-                    otherContent.style.maxHeight = null;
-                });
-
-                // 선택한 것만 예쁘게 열어줍니다.
-                header.classList.add("active");
-                content.classList.add("open");
-                // 아코디언이 부드럽게 늘어날 수 있도록 스크롤 높이를 높이값으로 지정해 줍니다.
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    });
-
-
-    // ==========================================
-    // 🔒 5. 강력한 보안이 탑재된 방명록 구현 (SHA-256 암호화)
-    // ==========================================
-    const guestbookForm = document.getElementById("guestbook-form");
-    const guestNameInput = document.getElementById("guest-name");
-    const guestPasswordInput = document.getElementById("guest-password");
-    const guestMessageInput = document.getElementById("guest-message");
-    const guestbookList = document.getElementById("guestbook-list");
-
-    // 로컬 저장소(localStorage)에서 기존 방명록 글 목록을 가져옵니다.
-    // 만약 아무 글도 없다면 빈 상자([])를 준비합니다.
-    let guestbookItems = JSON.parse(localStorage.getItem("wedding_guestbook")) || [];
-
-    // [강력한 보안 암호화 함수]
-    // 사용자가 입력한 비밀번호 원본(예: "1234")을 해커가 절대 알아볼 수 없도록 
-    // SHA-256이라는 수학적인 금고 방식으로 암호화하여 64글자의 외계어 해시값으로 변환합니다.
-    async function encryptSHA256(plainText) {
-        const encoder = new TextEncoder();
-        const data = encoder.encode(plainText); // 비밀번호 문자열을 컴퓨터 숫자로 변환
-        const hashBuffer = await crypto.subtle.digest("SHA-256", data); // 표준 SHA-256 암호화 수행
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        
-        // 16진수 문자열로 변환하여 리턴합니다.
-        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        return hashHex; 
-    }
-
-    // 화면에 저장되어 있는 방명록 카드를 쫙 그려주는 함수입니다.
-    function renderGuestbook() {
-        guestbookList.innerHTML = ""; // 기존 목록을 한 번 깨끗하게 청소합니다
-
-        if (guestbookItems.length === 0) {
-            // 아무 글도 없을 때는 아늑한 안내 문구를 띄웁니다.
-            guestbookList.innerHTML = `<p style="text-align:center; font-size:12px; color:#7E7471; padding:20px 0;">첫 번째 축하 메시지의 주인공이 되어주세요! 🌸</p>`;
-            return;
-        }
-
-        // 최신 글이 맨 위로 올라오도록 시간 역순으로 카드를 그립니다.
-        guestbookItems.slice().reverse().forEach((item) => {
-            const card = document.createElement("div");
-            card.className = "guestbook-card";
-            
-            // 보안을 위해 비밀번호는 이 카드에 노출되거나 저장되지 않으므로 안심하셔도 됩니다!
-            card.innerHTML = `
-                <div class="guest-card-header">
-                    <span class="guest-card-name">${escapeHTML(item.name)}</span>
-                    <span class="guest-card-date">${item.date}</span>
+            <!-- D-Day 실시간 카운트다운 시계 -->
+            <div class="countdown-container" id="countdown-container">
+                <p class="countdown-title">현빈과 사랑이가 하나 되는 날까지 💍</p>
+                <div class="timer">
+                    <div class="time-box">
+                        <span id="days" class="time-num">00</span>
+                        <span class="time-label">일</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours" class="time-num">00</span>
+                        <span class="time-label">시간</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes" class="time-num">00</span>
+                        <span class="time-label">분</span>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds" class="time-num">00</span>
+                        <span class="time-label">초</span>
+                    </div>
                 </div>
-                <div class="guest-card-body">${escapeHTML(item.message)}</div>
-                <!-- 본인이 남긴 글을 삭제할 수 있는 휴지통 아이콘입니다. -->
-                <button class="delete-card-btn" data-id="${item.id}" title="메시지 삭제"><i class="fas fa-trash-alt"></i> 삭제</button>
-            `;
-            
-            guestbookList.appendChild(card);
-        });
+            </div>
+        </div>
+    </header>
 
-        // 모든 삭제 버튼에 클릭 기능을 활성화합니다.
-        setupDeleteButtons();
-    }
+    <main class="content-wrapper">
 
-    // 나쁜 하객이 글 상자에 이상한 스크립트를 주입하지 못하게 하는 안전한 텍스트 변환 필터입니다.
-    function escapeHTML(str) {
-        return str
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
+        <!-- ② 초대의 글 -->
+        <section class="greeting-section" id="greeting">
+            <div class="section-title">
+                <h2>초대의 글</h2>
+                <div class="flower-icon">🌸</div>
+            </div>
+            <p class="greeting-text">
+                서로의 계절이 되어준 두 사람이<br>
+                이제 평생을 함께할 약속을 하려 합니다.<br><br>
+                따스한 눈길과 격려의 박수로<br>
+                저희의 소중한 시작을 함께 축복해 주시면<br>
+                더없는 기쁨과 감사로 간직하겠습니다.
+            </p>
+            <!-- 혼주 정보 -->
+            <div class="family-relation">
+                <div class="relation-row">
+                    <span class="parent-names">신랑 아버지 <b>이종원</b> · 어머니 <b>한정수</b></span>
+                    <span class="relation-text">의 차남</span>
+                    <span class="bride-groom-name"><b>현빈</b></span>
+                </div>
+                <div class="relation-row">
+                    <span class="parent-names">신부 아버지 <b>김정호</b> · 어머니 <b>최미경</b></span>
+                    <span class="relation-text">의 장녀</span>
+                    <span class="bride-groom-name"><b>사랑</b></span>
+                </div>
+            </div>
+        </section>
 
-    // 방명록 등록 폼을 전송(제출)했을 때 실행되는 함수입니다.
-    guestbookForm.addEventListener("submit", async (e) => {
-        e.preventDefault(); // 전송 후 화면이 새로고침되는 것을 방지합니다.
+        <!-- ③ 포토 갤러리 (5장 슬라이더) -->
+        <section class="gallery-section" id="gallery">
+            <div class="section-title">
+                <h2>포토 갤러리</h2>
+                <div class="flower-icon">📸</div>
+            </div>
+            <div class="slider-container">
+                <div class="slider-wrapper" id="slider-wrapper">
+                    <div class="slide slide-contain"><img src="assets/couple.png" alt="커플 웨딩" id="img-slide-1"></div>
+                    <div class="slide slide-contain"><img src="assets/walk1.png" alt="공원 나들이" id="img-slide-2"></div>
+                    <div class="slide slide-contain"><img src="assets/walk2.png" alt="강변 산책" id="img-slide-3"></div>
+                    <div class="slide slide-contain"><img src="assets/bride.png" alt="신부 사랑님" id="img-slide-4"></div>
+                    <div class="slide slide-contain"><img src="assets/groom.png" alt="신랑 현빈님" id="img-slide-5"></div>
+                </div>
+                <button class="slider-btn prev-btn" id="prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-btn next-btn" id="next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="slider-dots" id="slider-dots">
+                <span class="dot active" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
+                <span class="dot" data-index="3"></span>
+                <span class="dot" data-index="4"></span>
+            </div>
+        </section>
 
-        const name = guestNameInput.value.trim();
-        const rawPassword = guestPasswordInput.value; // 사용자가 입력한 날것의 비밀번호
-        const message = guestMessageInput.value.trim();
+        <!-- ④ 오시는 길 -->
+        <section class="location-section" id="location">
+            <div class="section-title"><h2>오시는 길</h2><div class="flower-icon">📍</div></div>
+            <div class="venue-info">
+                <h3>축복웨딩홀 3층 그랜드볼룸</h3>
+                <!-- ✏️ 실제 주소로 바꿀 부분! -->
+                <p class="address" id="venue-address">서울특별시 서초구 반포대로 123</p>
+                <button class="copy-address-btn" id="copy-address-btn">주소 복사하기</button>
+            </div>
+            <div class="map-placeholder">
+                <div class="map-links">
+                    <a href="https://map.naver.com" target="_blank" class="map-link-btn naver">네이버 지도</a>
+                    <a href="https://map.kakao.com" target="_blank" class="map-link-btn kakao">카카오 맵</a>
+                </div>
+            </div>
+        </section>
 
-        if (!name || !rawPassword || !message) {
-            alert("성함, 비밀번호, 내용을 모두 채워주세요!");
-            return;
-        }
+        <!-- ⑤ 마음 전하실 곳 (계좌번호) -->
+        <section class="accounts-section" id="accounts">
+            <div class="section-title"><h2>마음 전하실 곳</h2><div class="flower-icon">✉️</div></div>
+            <!-- 신랑측 계좌 (버튼 누르면 열림) -->
+            <div class="accordion-item">
+                <button class="accordion-header" id="groom-acc-header">
+                    <span>신랑 측 마음 전하실 곳</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="groom-acc-content">
+                    <div class="account-row">
+                        <div class="account-details">
+                            <span class="bank-name">신한은행</span>
+                            <!-- ✏️ 실제 계좌번호로 바꿀 부분! -->
+                            <span class="account-number">110-123-456789</span>
+                            <span class="account-holder">신랑 현빈</span>
+                        </div>
+                        <button class="copy-acc-btn" data-account="110-123-456789">복사</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 신부측 계좌 -->
+            <div class="accordion-item">
+                <button class="accordion-header" id="bride-acc-header">
+                    <span>신부 측 마음 전하실 곳</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content" id="bride-acc-content">
+                    <div class="account-row">
+                        <div class="account-details">
+                            <span class="bank-name">하나은행</span>
+                            <!-- ✏️ 실제 계좌번호로 바꿀 부분! -->
+                            <span class="account-number">321-654-098765</span>
+                            <span class="account-holder">신부 사랑</span>
+                        </div>
+                        <button class="copy-acc-btn" data-account="321-654-098765">복사</button>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        // [최우선 보안 보안 암호화]
-        // 비밀번호 원본은 절대로 보관하지 않습니다! 오직 암호화된 안전한 해시값만 저장합니다.
-        const encryptedPassword = await encryptSHA256(rawPassword);
+        <!-- ⑥ 축하 방명록 (보안 암호화 적용) -->
+        <section class="guestbook-section" id="guestbook">
+            <div class="section-title"><h2>축하 메시지</h2><div class="flower-icon">✍️</div></div>
+            <form class="guestbook-form" id="guestbook-form">
+                <div class="form-row">
+                    <input type="text" id="guest-name" placeholder="성함" required>
+                    <input type="password" id="guest-password" placeholder="비밀번호" required>
+                </div>
+                <div class="form-row">
+                    <textarea id="guest-message" rows="3" placeholder="축하의 말을 적어주세요." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">축하 글 올리기 ✨</button>
+            </form>
+            <div class="guestbook-list" id="guestbook-list"></div>
+        </section>
+    </main>
 
-        // 날짜를 구합니다 (예: 2026-06-02 10:30)
-        const now = new Date();
-        const dateString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    <footer class="main-footer">
+        <p>♥ 현빈 & 사랑의 결혼을 진심으로 축하합니다 ♥</p>
+        <p class="copyright">Designed with love for our daughter.</p>
+    </footer>
 
-        // 새로운 방명록 글 객체를 만듭니다.
-        const newGuestMessage = {
-            id: Date.now().toString(), // 고유한 식별용 번호
-            name: name,
-            passwordHash: encryptedPassword, // 꽁꽁 숨겨진 비밀번호 암호화 값 저장!
-            message: message,
-            date: dateString
-        };
-
-        // 기존 방명록 리스트에 새 글을 추가하고 저장합니다.
-        guestbookItems.push(newGuestMessage);
-        localStorage.setItem("wedding_guestbook", JSON.stringify(guestbookItems));
-
-        // 입력 칸들을 깨끗하게 비워줍니다.
-        guestNameInput.value = "";
-        guestPasswordInput.value = "";
-        guestMessageInput.value = "";
-
-        // 새롭게 리스트를 다시 그려주고 하객에게 알립니다.
-        renderGuestbook();
-        alert("축하 메시지가 등록되었습니다! 고맙습니다. 😊");
-    });
-
-    // 방명록 글을 삭제하는 버튼들의 기능을 관리합니다.
-    function setupDeleteButtons() {
-        const deleteButtons = document.querySelectorAll(".delete-card-btn");
-        
-        deleteButtons.forEach((btn) => {
-            btn.addEventListener("click", async (e) => {
-                // 클릭한 카드의 고유 식별 번호를 가져옵니다
-                const idToDelete = btn.getAttribute("data-id");
-                
-                // 해당 글 정보를 전체 리스트에서 찾아냅니다.
-                const targetItem = guestbookItems.find(item => item.id === idToDelete);
-                if (!targetItem) return;
-
-                // 하객에게 비밀번호를 물어봅니다.
-                const inputPassword = prompt("이 글을 남길 때 입력하셨던 비밀번호를 입력해 주세요:");
-                
-                if (inputPassword === null) return; // 취소를 눌렀을 때는 아무 동작 안 함
-
-                // 하객이 입력한 비밀번호도 마찬가지로 같은 SHA-256 방식으로 암호화하여 대조합니다.
-                const encryptedInputPassword = await encryptSHA256(inputPassword);
-
-                // 암호화된 값끼리 비교하므로, 비밀번호 원본 노출 없이 완벽하고 안전하게 본인 검증이 완료됩니다!
-                if (encryptedInputPassword === targetItem.passwordHash) {
-                    if (confirm("정말로 이 축하글을 삭제하시겠습니까?")) {
-                        // 비밀번호가 맞았으므로 해당 글을 리스트에서 도려냅니다.
-                        guestbookItems = guestbookItems.filter(item => item.id !== idToDelete);
-                        // 최신화된 리스트를 저장소에 갱신합니다.
-                        localStorage.setItem("wedding_guestbook", JSON.stringify(guestbookItems));
-                        // 다시 화면을 그려줍니다.
-                        renderGuestbook();
-                        alert("축하글이 성공적으로 삭제되었습니다.");
-                    }
-                } else {
-                    alert("비밀번호가 일치하지 않습니다. 다시 확인해 주세요. 🔒");
-                }
-            });
-        });
-    }
-
-    // 최초 실행 시 저장된 방명록을 화면에 출력합니다.
-    renderGuestbook();
-});
+    <script src="script.js"></script>
+</body>
+</html>
