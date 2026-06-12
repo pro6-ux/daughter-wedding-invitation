@@ -742,3 +742,52 @@ section {
     color: var(--text-light);
     letter-spacing: 1px;
 }
+
+/* ==========================================
+   📱 14. 모바일 기기 화면 최적화 (반응형 대응)
+   ========================================== */
+@media (max-width: 480px) {
+    /* 모바일 화면에서 양옆 패딩을 16px로 줄여 글자 잘림을 방지하고 가로 공간을 더 확보합니다 */
+    .content-wrapper {
+        padding: 50px 16px;
+    }
+    
+    /* 스마트폰 가로 비율에 맞춰 갤러리 이미지 슬라이더 높이를 조절합니다 */
+    .slide {
+        height: 360px;
+    }
+    
+    /* 모바일 기기에서 디데이 타이머 요소들이 넉넉하게 들어가도록 여백 및 폰트 크기를 다듬습니다 */
+    .countdown-container {
+        padding: 18px 12px;
+    }
+    
+    .time-box {
+        min-width: 45px;
+    }
+    
+    .time-num {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 360px) {
+    /* 화면이 아주 작은 미니 스마트폰(예: 아이폰 SE 등) 대응 */
+    .wedding-title {
+        font-size: 26px;
+    }
+    
+    .slide {
+        height: 320px;
+    }
+    
+    .relation-row {
+        font-size: 13px;
+    }
+    
+    .bride-groom-name {
+        font-size: 14px;
+        width: 50px;
+    }
+}
+
