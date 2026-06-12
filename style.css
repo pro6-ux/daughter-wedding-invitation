@@ -30,8 +30,8 @@ body {
     color: var(--text-dark);
     background-color: #ECE9E6; /* 전체 PC 배경은 부드러운 투톤 베이지로 두어 모바일 화면을 돋보이게 합니다 */
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* 세로로 일렬 정렬하여 위아래로 흐르게 합니다 */
+    align-items: center;    /* 자식 요소들이 가운데로 오도록 설정 */
     min-height: 100vh;
 }
 
